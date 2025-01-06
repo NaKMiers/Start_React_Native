@@ -1,81 +1,131 @@
 import Button from '@/components/Button'
 import FormField from '@/components/FormField'
 import { images } from '@/constants'
-import { Link } from 'expo-router'
+import { createUser } from '@/lib/appwrite'
+import { Link, useRouter } from 'expo-router'
 import React, { useCallback, useState } from 'react'
-import { Image, ScrollView, Text, View } from 'react-native'
+import { Alert, Image, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 function Register() {
+  // hooks
+  const router = useRouter()
+
   // states
   const [form, setForm] = useState<any>({
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
   })
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // handle register
-  const handleRegister = useCallback(() => {
-    console.log('Registering...')
-    alert('Registering...')
-  }, [])
+  const handleRegister = useCallback(async () => {
+    console.log('form', form)
+
+    // validate form
+    if (!form.username || !form.email || !form.password || !form.confirmPassword) {
+      Alert.alert('Error', 'Please fill all fields')
+      return
+    }
+
+    if (form.password !== form.confirmPassword) {
+      Alert.alert('Error', 'Password does not match')
+      return
+    }
+
+    // start loading
+    setIsLoading(true)
+
+    try {
+      const res = await createUser(form.username, form.email, form.password)
+      console.log('res', res)
+
+      // navigate to home
+      router.replace('/home')
+    } catch (err: any) {
+      Alert.alert('Error', err.message)
+    } finally {
+      // stop loading
+      setIsLoading(false)
+    }
+  }, [form])
 
   return (
-    <SafeAreaView className='bg-neutral-950 text-light h-full'>
-      <ScrollView contentContainerClassName='p-21 w-full max-w-[400px] mx-auto'>
-        <View className='min-h-[85vh] flex justify-center'>
-          <View className='overflow-hidden h-[50px] flex items-center justify-center'>
-            <Image source={images.logo} resizeMode='contain' className='max-w-[100px] h-full' />
+    <SafeAreaView className="h-full bg-neutral-950 text-light">
+      <ScrollView contentContainerClassName="p-21 w-full max-w-[400px] mx-auto">
+        <View className="flex min-h-[85vh] justify-center">
+          <View className="flex h-[50px] items-center justify-center overflow-hidden">
+            <Image
+              source={images.logo}
+              resizeMode="contain"
+              className="h-full max-w-[100px]"
+            />
           </View>
 
-          <Text className='text-2xl text-light font-semibold text-center tracking-wider mt-2'>
-            Register to <Text className='font-bold text-primary'>Start</Text>
+          <Text className="mt-2 text-center text-2xl font-semibold tracking-wider text-light">
+            Register to{' '}
+            <Link
+              href="/"
+              className="font-bold text-primary"
+            >
+              Start
+            </Link>
           </Text>
 
           {/* Form */}
           <View>
             <FormField
-              title='Username'
-              name='username'
+              title="Username"
+              name="username"
               value={form.username}
               setForm={setForm}
-              className='mt-7'
-              type='text'
+              className="mt-7"
+              type="text"
             />
 
             <FormField
-              title='Email'
-              name='email'
+              title="Email"
+              name="email"
               value={form.email}
               setForm={setForm}
-              className='mt-7'
-              type='email-address'
+              className="mt-7"
+              type="email-address"
             />
 
             <FormField
-              title='Password'
-              name='password'
+              title="Password"
+              name="password"
               value={form.password}
               setForm={setForm}
-              className='mt-7'
-              type='password'
+              className="mt-7"
+              type="password"
             />
 
             <FormField
-              title='Confirm Password'
-              name='confirmPassword'
+              title="Confirm Password"
+              name="confirmPassword"
               value={form.confirmPassword}
               setForm={setForm}
-              className='mt-7'
-              type='password'
+              className="mt-7"
+              type="password"
             />
 
-            <Button className='mt-10 h-[50px]' title='Register' handlePress={handleRegister} />
+            <Button
+              className="mt-10 h-[50px]"
+              title="Register"
+              handlePress={handleRegister}
+              isLoading={isLoading}
+            />
           </View>
 
-          <Text className='text-light text-center mt-7'>
-            Haven an account already?{' '}
-            <Link href='/login' className='font-semibold text-primary'>
+          <Text className="mt-7 text-center text-light">
+            Have an account already?{' '}
+            <Link
+              href="/login"
+              className="font-semibold text-primary"
+            >
               Login
             </Link>
           </Text>

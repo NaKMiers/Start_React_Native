@@ -1,62 +1,105 @@
 import Button from '@/components/Button'
 import FormField from '@/components/FormField'
 import { images } from '@/constants'
-import { Link } from 'expo-router'
+import { signIn } from '@/lib/appwrite'
+import { Link, useRouter } from 'expo-router'
 import React, { useCallback, useState } from 'react'
-import { Image, ScrollView, Text, View } from 'react-native'
+import { Alert, Image, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 function Login() {
+  // hooks
+  const router = useRouter()
+
   // states
   const [form, setForm] = useState<any>({
     email: '',
     password: '',
   })
 
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   // handle login
-  const handleLogin = useCallback(() => {
-    console.log('Logging in...')
-    alert('Logging in...')
-  }, [])
+  const handleLogin = useCallback(async () => {
+    // validate form
+    if (!form.email || !form.password) {
+      Alert.alert('Error', 'Please fill all fields')
+      return
+    }
+
+    // start loading
+    setIsLoading(true)
+
+    try {
+      // login
+      await signIn(form.email, form.password)
+
+      // navigate to home
+      router.replace('/home')
+    } catch (err: any) {
+      Alert.alert('Error', err.message)
+    } finally {
+      // stop loading
+      setIsLoading(false)
+    }
+  }, [form])
 
   return (
-    <SafeAreaView className='bg-neutral-950 text-light h-full'>
-      <ScrollView contentContainerClassName='p-21 w-full max-w-[400px] mx-auto'>
-        <View className='min-h-[85vh] flex justify-center'>
-          <View className='overflow-hidden h-[50px] flex items-center justify-center'>
-            <Image source={images.logo} resizeMode='contain' className='max-w-[100px] h-full' />
+    <SafeAreaView className="h-full bg-neutral-950 text-light">
+      <ScrollView contentContainerClassName="p-21 w-full max-w-[400px] mx-auto">
+        <View className="flex min-h-[85vh] justify-center">
+          <View className="flex h-[50px] items-center justify-center overflow-hidden">
+            <Image
+              source={images.logo}
+              resizeMode="contain"
+              className="h-full max-w-[100px]"
+            />
           </View>
 
-          <Text className='text-2xl text-light font-semibold text-center tracking-wider mt-2'>
-            Login to <Text className='font-bold text-primary'>Start</Text>
+          <Text className="mt-2 text-center text-2xl font-semibold tracking-wider text-light">
+            Login to{' '}
+            <Link
+              href="/"
+              className="font-bold text-primary"
+            >
+              Start
+            </Link>
           </Text>
 
           {/* Form */}
           <View>
             <FormField
-              title='Email'
-              name='email'
+              title="Email"
+              name="email"
               value={form.email}
               setForm={setForm}
-              className='mt-7'
-              type='email-address'
+              className="mt-7"
+              type="email-address"
             />
 
             <FormField
-              title='Password'
-              name='password'
+              title="Password"
+              name="password"
               value={form.password}
               setForm={setForm}
-              className='mt-7'
-              type='password'
+              className="mt-7"
+              type="password"
             />
 
-            <Button className='mt-10 h-[50px]' title='Login' handlePress={handleLogin} />
+            <Button
+              className="mt-10 h-[50px]"
+              title="Login"
+              handlePress={handleLogin}
+              isLoading={isLoading}
+            />
           </View>
 
-          <Text className='text-light text-center mt-7'>
+          <Text className="mt-7 text-center text-light">
             Don't you have an account?{' '}
-            <Link href='/register' className='font-semibold text-primary'>
+            <Link
+              href="/register"
+              className="font-semibold text-primary"
+            >
               Register
             </Link>
           </Text>

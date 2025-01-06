@@ -1,7 +1,27 @@
 import { icons } from '@/constants'
+import { capitalize } from '@/utils/string'
 import { Tabs } from 'expo-router'
 import React from 'react'
-import { Image, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
+
+const tabs: any[] = [
+  {
+    name: 'home',
+    icon: icons.home,
+  },
+  {
+    name: 'bookmark',
+    icon: icons.bookmark,
+  },
+  {
+    name: 'create',
+    icon: icons.plus,
+  },
+  {
+    name: 'profile',
+    icon: icons.profile,
+  },
+]
 
 export default function TabsLayout() {
   return (
@@ -12,68 +32,40 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: '#161622',
           borderTopWidth: 2,
-          borderTopColor: '#f44336',
           height: 100,
-          paddingTop: 15,
+          paddingTop: 10,
         },
+        tabBarLabelStyle: { display: 'none' },
+        tabBarIconStyle: { display: 'none' },
       }}
     >
-      <Tabs.Screen
-        name='home'
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => (
-            <Image
-              source={icons.home}
-              tintColor={color}
-              resizeMode='contain'
-              className='w-7 h-7 mb-1.5'
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name='bookmark'
-        options={{
-          title: 'Bookmark',
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={icons.bookmark}
-              tintColor={color}
-              resizeMode='contain'
-              className='w-7 h-7 mb-1.5'
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name='create'
-        options={{
-          title: 'Create',
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={icons.plus}
-              tintColor={color}
-              resizeMode='contain'
-              className='w-7 h-7 mb-1.5'
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name='profile'
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, focused }) => (
-            <Image
-              source={icons.profile}
-              tintColor={color}
-              resizeMode='contain'
-              className='w-7 h-7 mb-1.5'
-            />
-          ),
-        }}
-      />
+      {tabs.map(tab => (
+        <Tabs.Screen
+          name={tab.name}
+          options={{
+            tabBarLabel: ({ color }) => (
+              <View className="flex h-full items-center justify-center">
+                <Image
+                  source={tab.icon}
+                  style={{
+                    tintColor: color,
+                    height: 20,
+                    width: 20,
+                  }}
+                  resizeMode="contain"
+                />
+                <Text
+                  className="mt-1 text-center font-body text-sm tracking-widest"
+                  style={{ color }}
+                >
+                  {capitalize(tab.name)}
+                </Text>
+              </View>
+            ),
+          }}
+          key={tab.name}
+        />
+      ))}
     </Tabs>
   )
 }
