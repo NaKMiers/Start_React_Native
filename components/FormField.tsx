@@ -10,6 +10,7 @@ interface FormFieldProps {
   type?: string
   placeholder?: string
   className?: string
+  [key: string]: any
 }
 
 export default function FormField({
@@ -20,29 +21,42 @@ export default function FormField({
   setForm,
   placeholder,
   className = '',
+  ...rest
 }: FormFieldProps) {
   // states
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
   return (
     <View className={`${className}`}>
-      <Text className='text-light font-semibold'>{title}</Text>
+      <Text className="font-semibold text-light">{title}</Text>
 
-      <View className='h-14 flex overflow-hidden flex-row items-center justify-between bg-neutral-900 mt-3 rounded-xl'>
+      <View className="mt-3 flex h-14 flex-row items-center justify-between overflow-hidden rounded-xl bg-neutral-900">
         <TextInput
-          className='h-full flex-1 text-light font-body tracking-wider outline-none px-4'
+          className="h-full flex-1 px-4 font-body tracking-wider text-light outline-none"
           value={value}
           onChangeText={text => setForm((prev: any) => ({ ...prev, [name]: text }))}
           placeholder={placeholder}
           secureTextEntry={type === 'password' && !showPassword}
+          {...rest}
         />
 
         {type === 'password' && (
-          <TouchableOpacity className='px-4' onPress={() => setShowPassword(prev => !prev)}>
+          <TouchableOpacity
+            className="px-4"
+            onPress={() => setShowPassword(prev => !prev)}
+          >
             {showPassword ? (
-              <FontAwesome name='eye-slash' color='yellow' size={16} />
+              <FontAwesome
+                name="eye-slash"
+                color="yellow"
+                size={16}
+              />
             ) : (
-              <FontAwesome name='eye' color='yellow' size={16} />
+              <FontAwesome
+                name="eye"
+                color="yellow"
+                size={16}
+              />
             )}
           </TouchableOpacity>
         )}

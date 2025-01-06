@@ -1,0 +1,26 @@
+[
+  {
+    "$collectionId": "677be26e002090e22b7c",
+    "$createdAt": "2025-01-06T14:04:17.039+00:00",
+    "$databaseId": "677aa97500234182508b",
+    "$id": "677be2db003710243087",
+    "$permissions": [],
+    "$updatedAt": "2025-01-06T14:04:17.039+00:00",
+    "creator": {
+      "$collectionId": "677be031002f0ffe50d6",
+      "$createdAt": "2025-01-06T14:00:35.198+00:00",
+      "$databaseId": "677aa97500234182508b",
+      "$id": "677be1fd00307f0e3915",
+      "$permissions": [],
+      "$updatedAt": "2025-01-06T14:00:35.198+00:00",
+      "accountId": "677be1fb002777c47220",
+      "avatar": "https://cloud.appwrite.io/v1/avatars/initials?name=nakmiers&project=677aa7620032d2aabfeb",
+      "email": "diwas118151@gmail.com",
+      "username": "nakmiers"
+    },
+    "prompt": "React Native Course for Beginners in 2024 | Build a Full Stack React Native App",
+    "thumbnail": "https://i.ytimg.com/an_webp/ZBCUegTZF7M/mqdefault_6s.webp?du=3000&sqp=CMH67rsG&rs=AOn4CLAqwi5seVaA6CM7eVvHwuxpnOHMhg",
+    "title": "React Native Course for Beginners in 2024",
+    "video": "https://youtu.be/ZBCUegTZF7M"
+  }
+]

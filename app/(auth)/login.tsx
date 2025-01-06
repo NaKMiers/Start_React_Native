@@ -75,6 +75,7 @@ function Login() {
               setForm={setForm}
               className="mt-7"
               type="email-address"
+              autoComplete="email"
             />
 
             <FormField

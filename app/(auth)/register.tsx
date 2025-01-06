@@ -1,6 +1,7 @@
 import Button from '@/components/Button'
 import FormField from '@/components/FormField'
 import { images } from '@/constants'
+import { GlobalContextType, useGlobalContext } from '@/context/GlobalProvider'
 import { createUser } from '@/lib/appwrite'
 import { Link, useRouter } from 'expo-router'
 import React, { useCallback, useState } from 'react'
@@ -40,6 +41,7 @@ function Register() {
 
     try {
       const res = await createUser(form.username, form.email, form.password)
+      console.log('res', res)
       console.log('res', res)
 
       // navigate to home
@@ -83,6 +85,7 @@ function Register() {
               setForm={setForm}
               className="mt-7"
               type="text"
+              autoComplete="username"
             />
 
             <FormField
@@ -92,6 +95,7 @@ function Register() {
               setForm={setForm}
               className="mt-7"
               type="email-address"
+              autoComplete="email"
             />
 
             <FormField
@@ -101,6 +105,7 @@ function Register() {
               setForm={setForm}
               className="mt-7"
               type="password"
+              autoComplete="password"
             />
 
             <FormField
@@ -110,6 +115,7 @@ function Register() {
               setForm={setForm}
               className="mt-7"
               type="password"
+              autoComplete="password"
             />
 
             <Button

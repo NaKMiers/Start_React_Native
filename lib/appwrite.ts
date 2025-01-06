@@ -6,8 +6,8 @@ export const config = {
   platform: 'com.deewas.start-react-native',
   projectId: '677aa7620032d2aabfeb',
   databaseId: '677aa97500234182508b',
-  userCollectionId: '677aa9bc001f6aedb5f0',
-  videoCollectionId: '677aa9f800015167999d',
+  userCollectionId: '677be031002f0ffe50d6',
+  videoCollectionId: '677be26e002090e22b7c',
   storageId: '677aabc20003cc080e97',
 }
 
@@ -100,6 +100,31 @@ export const getCurrentUser = async () => {
   } catch (err: any) {
     console.error(err)
     return null
+  }
+}
+
+// get all posts
+export const getAllPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId)
+
+    return posts.documents
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// get latest posts
+export const getLatestPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
+      Query.orderDesc('$createdAt'),
+      Query.limit(7),
+    ])
+
+    return posts.documents
+  } catch (err: any) {
+    throw new Error(err)
   }
 }
 
