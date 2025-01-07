@@ -1,7 +1,8 @@
 import { icons } from '@/constants'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
+import { Video, ResizeMode } from 'expo-av'
 
 interface TrendingProps {
   posts: any[]
@@ -11,6 +12,11 @@ interface TrendingProps {
 function Trending({ posts, className = '' }: TrendingProps) {
   // states
   const [activeItem, setActiveItem] = useState<any>(posts[0])
+
+  // refs
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 70,
+  })
 
   // handle viewable items changed
   const handleViewableItemsChanged = useCallback(({ viewableItems }: any) => {
@@ -30,12 +36,10 @@ function Trending({ posts, className = '' }: TrendingProps) {
           activeItem={activeItem}
         />
       )}
-      ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+      ItemSeparatorComponent={() => <View style={{ width: 10.5 }} />}
       className={`${className}`}
       onViewableItemsChanged={handleViewableItemsChanged}
-      viewabilityConfig={{
-        itemVisiblePercentThreshold: 70,
-      }}
+      viewabilityConfig={viewabilityConfig.current}
     />
   )
 }
@@ -48,14 +52,14 @@ interface TrendingItemProps {
 
 const zoomIn = {
   0: {
-    transform: [{ scale: 1 }],
+    transform: [{ scale: 0.9 }],
   },
-  1: { transform: [{ scale: 1.1 }] },
+  1: { transform: [{ scale: 1 }] },
 }
 
 const zoomOut = {
-  0: { transform: [{ scale: 1.1 }] },
-  1: { transform: [{ scale: 1 }] },
+  0: { transform: [{ scale: 1 }] },
+  1: { transform: [{ scale: 0.9 }] },
 }
 
 function TrendingItem({ activeItem, item, className = '' }: TrendingItemProps) {
@@ -64,11 +68,27 @@ function TrendingItem({ activeItem, item, className = '' }: TrendingItemProps) {
 
   return (
     <Animatable.View
-      className={`${className}`}
+      className={`flex items-center justify-center ${className}`}
       animation={activeItem === item.$id ? zoomIn : zoomOut}
     >
       {play ? (
-        <Text className="text-light">Playing...</Text>
+        <Video
+          source={{ uri: item.video }}
+          style={{
+            width: 208,
+            height: 288,
+            borderRadius: 35,
+            backgroundColor: '#333',
+          }}
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status: any) => {
+            if (status.didJustFinish) {
+              setPlay(false)
+            }
+          }}
+        />
       ) : (
         <TouchableOpacity
           className="relative flex items-center justify-center shadow-lg"

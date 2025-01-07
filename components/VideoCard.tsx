@@ -1,6 +1,7 @@
 import { icons } from '@/constants'
 import React, { useEffect, useState } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Video, ResizeMode } from 'expo-av'
 
 interface VideoCard {
   post: any
@@ -20,7 +21,7 @@ function VideoCard({ post, refreshing, className }: VideoCard) {
     <View className={`mb-14 flex flex-col items-center gap-2 px-21/2 ${className}`}>
       {/* Card Header */}
       <View className="flex w-full flex-row items-center gap-21/2">
-        <View className="aspect-square h-[40px] w-[40px] overflow-hidden rounded-lg border border-primary">
+        <View className="aspect-square h-[40px] w-[40px] overflow-hidden rounded-lg">
           <Image
             source={{ uri: post.creator.avatar }}
             className="h-full w-full rounded-lg"
@@ -52,7 +53,23 @@ function VideoCard({ post, refreshing, className }: VideoCard) {
 
       {/* Card Body */}
       {play ? (
-        <Text className="text-light">Playing...</Text>
+        <Video
+          source={{ uri: post.video }}
+          style={{
+            width: '100%',
+            aspectRatio: 16 / 9,
+            borderRadius: 16,
+            backgroundColor: '#333',
+          }}
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status: any) => {
+            if (status.didJustFinish) {
+              setPlay(false)
+            }
+          }}
+        />
       ) : (
         <TouchableOpacity
           className="relative aspect-video w-full overflow-hidden rounded-lg"
