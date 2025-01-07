@@ -9,15 +9,14 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "package": "com.deewas.start-react-native"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.deewas.start-react-native"
+      "package": "com.deewas.startreactnative"
     },
     "web": {
       "bundler": "metro",
@@ -35,13 +34,7 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      ["expo-font"],
-      [
-        "expo-av",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
-        }
-      ]
+      ["expo-font"]
     ],
     "experiments": {
       "typedRoutes": true

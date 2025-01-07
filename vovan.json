@@ -1,0 +1,57 @@
+{
+  "files": [
+    {
+      "$createdAt": "2025-01-07T13:59:29.085+00:00",
+      "$id": "677d3340000b49bd7641",
+      "$permissions": [],
+      "$updatedAt": "2025-01-07T13:59:29.085+00:00",
+      "bucketId": "677aabc20003cc080e97",
+      "chunksTotal": 1,
+      "chunksUploaded": 1,
+      "mimeType": "image/jpeg",
+      "name": "file-1736258368179.jpg",
+      "signature": "43ffafe7ce24f2b3df288c35a9ed2b61",
+      "sizeOriginal": 347098
+    },
+    {
+      "$createdAt": "2025-01-07T14:00:18.174+00:00",
+      "$id": "677d3340000b850918d7",
+      "$permissions": [],
+      "$updatedAt": "2025-01-07T14:00:23.117+00:00",
+      "bucketId": "677aabc20003cc080e97",
+      "chunksTotal": 2,
+      "chunksUploaded": 2,
+      "mimeType": "video/quicktime",
+      "name": "file-1736258368183.mov",
+      "signature": "03afd86999e1ef63379500ced3800676-2",
+      "sizeOriginal": 8402627
+    },
+    {
+      "$createdAt": "2025-01-07T14:10:47.721+00:00",
+      "$id": "677d35e300269c6e0c77",
+      "$permissions": [],
+      "$updatedAt": "2025-01-07T14:10:47.721+00:00",
+      "bucketId": "677aabc20003cc080e97",
+      "chunksTotal": 1,
+      "chunksUploaded": 1,
+      "mimeType": "image/jpeg",
+      "name": "file-1736259043616.jpg",
+      "signature": "4a7a81ec58b289000b892990f53ef114",
+      "sizeOriginal": 482563
+    },
+    {
+      "$createdAt": "2025-01-07T14:10:51.654+00:00",
+      "$id": "677d35e30026c4a83fb9",
+      "$permissions": [],
+      "$updatedAt": "2025-01-07T14:10:51.654+00:00",
+      "bucketId": "677aabc20003cc080e97",
+      "chunksTotal": 1,
+      "chunksUploaded": 1,
+      "mimeType": "video/quicktime",
+      "name": "file-1736259043620.mov",
+      "signature": "f213a4ffca3e2705082e0e389a9696ba",
+      "sizeOriginal": 5091015
+    }
+  ],
+  "total": 4
+}

@@ -47,7 +47,7 @@ function Login() {
       // stop loading
       setIsLoading(false)
     }
-  }, [form])
+  }, [form, router, setIsLoggedIn, setUser])
 
   return (
     <SafeAreaView className="h-full bg-neutral-950 text-light">

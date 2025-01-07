@@ -1,5 +1,6 @@
-import { getCurrentUser } from '@/lib/appwrite'
+import { getCurrentUser, getUserFavorites } from '@/lib/appwrite'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { Alert } from 'react-native'
 
 export interface GlobalContextType {
   isLoggedIn: boolean
@@ -18,6 +19,7 @@ const GlobalProvider = ({ children }: any) => {
   // states
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const [user, setUser] = useState<any>(null)
+  const [favorites, setFavorites] = useState<any>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
@@ -32,12 +34,16 @@ const GlobalProvider = ({ children }: any) => {
         if (currentUser) {
           setIsLoggedIn(true)
           setUser(currentUser)
+
+          // get favorites
+          const favorites = await getUserFavorites(currentUser.$id)
+          setFavorites(favorites)
         } else {
           setIsLoggedIn(false)
           setUser(null)
         }
       } catch (err: any) {
-        console.log(err)
+        Alert.alert('Error', err.message)
       } finally {
         // stop loading
         setIsLoading(false)
@@ -49,7 +55,18 @@ const GlobalProvider = ({ children }: any) => {
 
   return (
     <GlobalContext.Provider
-      value={{ isLoading, setIsLoading, isLoggedIn, setIsLoggedIn, user, setUser } as GlobalContextType}
+      value={
+        {
+          isLoading,
+          setIsLoading,
+          isLoggedIn,
+          setIsLoggedIn,
+          user,
+          setUser,
+          favorites,
+          setFavorites,
+        } as GlobalContextType
+      }
     >
       {children}
     </GlobalContext.Provider>

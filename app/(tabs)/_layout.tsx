@@ -10,7 +10,7 @@ const tabs: any[] = [
     icon: icons.home,
   },
   {
-    name: 'bookmark',
+    name: 'favorites',
     icon: icons.bookmark,
   },
   {
@@ -28,7 +28,7 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#fff',
+        tabBarActiveTintColor: 'yellow',
         tabBarInactiveTintColor: '#777',
         tabBarStyle: {
           backgroundColor: '#161622',

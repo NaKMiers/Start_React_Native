@@ -14,7 +14,7 @@ export default function App() {
   // press button
   const handlePress = useCallback(() => {
     router.push('/login')
-  }, [])
+  }, [router])
 
   return !isLoading && isLoggedIn ? (
     <Redirect href="/home" />

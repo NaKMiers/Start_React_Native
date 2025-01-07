@@ -1,3 +1,4 @@
+import { VideoFormType } from '@/app/(tabs)/create'
 import { Account, Avatars, Client, Databases, ID, Query, Storage } from 'react-native-appwrite'
 
 // appwrite config
@@ -6,9 +7,10 @@ export const config = {
   platform: 'com.deewas.start-react-native',
   projectId: '677aa7620032d2aabfeb',
   databaseId: '677aa97500234182508b',
+  storageId: '677aabc20003cc080e97',
   userCollectionId: '677be031002f0ffe50d6',
   videoCollectionId: '677be26e002090e22b7c',
-  storageId: '677aabc20003cc080e97',
+  userFavorites: '677d3833003590a72640',
 }
 
 // create client instance for using appwrite
@@ -102,9 +104,16 @@ export const getCurrentUser = async () => {
 }
 
 // get all posts
-export const getAllPosts = async () => {
+export const getAllPosts = async (postIds: string[] = []) => {
   try {
-    const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId)
+    let posts
+    if (postIds.length > 0) {
+      posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
+        Query.contains('$id', postIds),
+      ])
+    } else {
+      posts = await databases.listDocuments(config.databaseId, config.videoCollectionId)
+    }
 
     return posts.documents
   } catch (err: any) {
@@ -128,7 +137,6 @@ export const getLatestPosts = async () => {
 
 // search posts
 export const searchPosts = async (query: string) => {
-  console.log('query', query)
   try {
     const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
       Query.contains('title', query),
@@ -146,6 +154,7 @@ export const getUserPosts = async (userId: string) => {
   try {
     const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
       Query.equal('creator', userId),
+      Query.orderDesc('$createdAt'),
     ])
 
     return posts.documents
@@ -159,6 +168,143 @@ export const signOut = async () => {
   try {
     const session = await account.deleteSession('current')
     return session
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// get file preview
+export const getFileView = async (fileId: string, type: 'video' | 'image') => {
+  let fileUrl
+
+  try {
+    fileUrl = storage.getFileView(config.storageId, fileId)
+
+    if (!fileUrl) throw Error('Failed to get file preview')
+
+    return fileUrl
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// upload file
+export const uploadFile = async (file: any, type: 'image' | 'video') => {
+  // file not found
+  if (!file) return
+
+  const extension = file.uri?.split('.').pop()
+
+  const fileBlob = {
+    uri: file.uri,
+    name: file.fileName || `file-${new Date().getTime()}.${extension}`,
+    type: file.mimeType || (type === 'image' ? 'image/jpeg' : 'video/mp4'),
+    size: file.fileSize || 0,
+  }
+
+  try {
+    const uploadedFile = await storage.createFile(config.storageId, ID.unique(), fileBlob)
+    const fileUrl = await getFileView(uploadedFile.$id, type)
+    return fileUrl
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// create video
+export const createVideo = async (form: VideoFormType) => {
+  try {
+    const [thumbnail, video] = await Promise.all([
+      uploadFile(form.thumbnail, 'image'),
+      uploadFile(form.video, 'video'),
+    ])
+
+    await databases.createDocument(config.databaseId, config.videoCollectionId, ID.unique(), {
+      title: form.title,
+      prompt: form.prompt,
+      thumbnail,
+      video,
+      creator: form.creator,
+    })
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// delete video
+export const deleteVideo = async (videoId: string) => {
+  try {
+    // get user for checking permission
+    const user = await getCurrentUser()
+
+    // user not found
+    if (!user) throw Error('User not found')
+
+    // get video for checking creator
+    const video = await databases.getDocument(config.databaseId, config.videoCollectionId, videoId)
+
+    // video not found
+    if (!video) throw Error('Video not found')
+
+    // check if user is not the creator
+    if (user.$id !== video.creator.$id) throw Error('Only creator can delete this video')
+
+    const thumbnailFileId = video.thumbnail.split('/')[8]
+    const videoFileId = video.video.split('/')[8]
+
+    // delete files from storage
+    await Promise.all([
+      storage.deleteFile(config.storageId, thumbnailFileId),
+      storage.deleteFile(config.storageId, videoFileId),
+    ])
+
+    // delete video from database
+    await databases.deleteDocument(config.databaseId, config.videoCollectionId, videoId)
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// get user's favorites
+export const getUserFavorites = async (userId: string) => {
+  try {
+    // get user favorites from database
+    const favorites = await databases.listDocuments(config.databaseId, config.userFavorites, [
+      Query.equal('userId', userId),
+      Query.orderDesc('$createdAt'),
+    ])
+
+    return favorites.documents
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// add post to favorites
+export const addFavorites = async (userId: string, videoId: string) => {
+  try {
+    // add post to user's favorites
+    const newFavoritePost = await databases.createDocument(
+      config.databaseId,
+      config.userFavorites,
+      ID.unique(),
+      {
+        userId,
+        videoId,
+      }
+    )
+
+    return newFavoritePost
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// remove from favorites
+export const removeFavorites = async (id: string) => {
+  try {
+    // remove video from user favorites
+    await databases.deleteDocument(config.databaseId, config.userFavorites, id)
   } catch (err: any) {
     throw new Error(err)
   }

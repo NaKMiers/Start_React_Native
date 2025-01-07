@@ -65,16 +65,19 @@ function Home() {
 
             <SearchInput className="mt-3" />
 
-            <View style={{ marginTop: 20, marginBottom: 10 }}>
-              <Text className="mt-4 font-semibold text-light">Latest Videos</Text>
-              <Trending posts={latestPosts} />
-            </View>
+            {latestPosts.length > 0 && (
+              <View style={{ marginTop: 20, marginBottom: 10 }}>
+                <Text className="mt-4 font-semibold text-light">Latest Videos</Text>
+                <Trending posts={latestPosts} />
+              </View>
+            )}
           </View>
         )}
         ListEmptyComponent={() => (
           <EmptyState
             title="No Videos Found"
             subTitle="Be the first on to upload a video!"
+            className="mb-20"
           />
         )}
         refreshControl={
