@@ -1,12 +1,12 @@
 import EmptyState from '@/components/EmptyState'
-import Search from '@/components/Search'
+import SearchInput from '@/components/SearchInput'
 import Trending from '@/components/Trending'
 import VideoCard from '@/components/VideoCard'
 import { images } from '@/constants'
 import { useGlobalContext } from '@/context/GlobalProvider'
 import { getAllPosts, getLatestPosts } from '@/lib/appwrite'
 import { useAppwrite } from '@/lib/useAppwrite'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -16,8 +16,6 @@ function Home() {
   const { data: posts, refetch } = useAppwrite(getAllPosts)
   const { data: latestPosts } = useAppwrite(getLatestPosts)
 
-  console.log('latestPosts', latestPosts)
-
   // states
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
@@ -25,10 +23,8 @@ function Home() {
   const handleRefresh = useCallback(async () => {
     setRefreshing(true)
 
-    console.log('refreshing...')
     try {
       await refetch()
-      console.log('refreshed!')
     } catch (err: any) {
       console.error(err)
     } finally {
@@ -67,9 +63,9 @@ function Home() {
               </View>
             </View>
 
-            <Search className="mt-3" />
+            <SearchInput className="mt-3" />
 
-            <View style={{ marginTop: 20, marginBottom: 20 }}>
+            <View style={{ marginTop: 20, marginBottom: 10 }}>
               <Text className="mt-4 font-semibold text-light">Latest Videos</Text>
               <Trending posts={latestPosts} />
             </View>

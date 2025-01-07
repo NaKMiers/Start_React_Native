@@ -1,11 +1,11 @@
 import { icons } from '@/constants'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { Video, ResizeMode } from 'expo-av'
 
 interface VideoCard {
   post: any
-  refreshing: boolean
+  refreshing?: boolean
   className?: string
 }
 
@@ -93,4 +93,4 @@ function VideoCard({ post, refreshing, className }: VideoCard) {
   )
 }
 
-export default VideoCard
+export default memo(VideoCard)

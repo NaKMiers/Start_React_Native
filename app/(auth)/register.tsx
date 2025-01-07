@@ -23,8 +23,6 @@ function Register() {
 
   // handle register
   const handleRegister = useCallback(async () => {
-    console.log('form', form)
-
     // validate form
     if (!form.username || !form.email || !form.password || !form.confirmPassword) {
       Alert.alert('Error', 'Please fill all fields')
@@ -41,8 +39,6 @@ function Register() {
 
     try {
       const res = await createUser(form.username, form.email, form.password)
-      console.log('res', res)
-      console.log('res', res)
 
       // navigate to home
       router.replace('/home')

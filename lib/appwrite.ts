@@ -82,8 +82,6 @@ export const getCurrentUser = async () => {
     // get current account to get current user
     const curAccount = await getAccount()
 
-    console.log('curAccount', curAccount)
-
     // get current account failed
     if (!curAccount) throw Error
 
@@ -120,6 +118,21 @@ export const getLatestPosts = async () => {
     const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
       Query.orderDesc('$createdAt'),
       Query.limit(7),
+    ])
+
+    return posts.documents
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// search posts
+export const searchPosts = async (query: string) => {
+  console.log('query', query)
+  try {
+    const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
+      Query.contains('title', query),
+      Query.contains('prompt', query),
     ])
 
     return posts.documents

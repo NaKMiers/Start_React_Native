@@ -6,14 +6,12 @@ export const useAppwrite = (callback: Function) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // fetch data
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     // start loading
     setIsLoading(true)
 
     try {
       const res = await callback()
-
-      console.log('res', res)
 
       setData(res)
     } catch (err: any) {
@@ -22,13 +20,13 @@ export const useAppwrite = (callback: Function) => {
       // stop loading
       setIsLoading(false)
     }
-  }, [callback])
+  }
 
   useEffect(() => {
     fetchData()
-  }, [fetchData])
+  }, [])
 
   const refetch = () => fetchData()
 
-  return { data, refetch }
+  return { data, isLoading, refetch }
 }

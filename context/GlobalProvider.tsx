@@ -23,13 +23,11 @@ const GlobalProvider = ({ children }: any) => {
   useEffect(() => {
     // get current user
     const getCurUser = async () => {
-      console.log('getCurUser')
       // start loading
       setIsLoading(true)
 
       try {
         const currentUser = await getCurrentUser()
-        console.log('currentUser', currentUser)
 
         if (currentUser) {
           setIsLoggedIn(true)
