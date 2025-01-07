@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native'
-import React from 'react'
+import React, { memo } from 'react'
 import { images } from '@/constants'
 import Button from './Button'
 import { router } from 'expo-router'
@@ -39,4 +39,4 @@ function EmptyState({ title, subTitle, className = '' }: EmptyStateProps) {
   )
 }
 
-export default EmptyState
+export default memo(EmptyState)

@@ -1,7 +1,8 @@
 import Button from '@/components/Button'
 import FormField from '@/components/FormField'
 import { images } from '@/constants'
-import { signIn } from '@/lib/appwrite'
+import { useGlobalContext } from '@/context/GlobalProvider'
+import { getCurrentUser, signIn } from '@/lib/appwrite'
 import { Link, useRouter } from 'expo-router'
 import React, { useCallback, useState } from 'react'
 import { Alert, Image, ScrollView, Text, View } from 'react-native'
@@ -9,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 function Login() {
   // hooks
+  const { setUser, setIsLoggedIn }: any = useGlobalContext()
   const router = useRouter()
 
   // states
@@ -33,8 +35,11 @@ function Login() {
     try {
       // login
       await signIn(form.email, form.password)
+      const res = await getCurrentUser()
+      setUser(res)
+      setIsLoggedIn(true)
 
-      // navigate to home
+      Alert.alert('Success', 'User signed in successfully')
       router.replace('/home')
     } catch (err: any) {
       Alert.alert('Error', err.message)

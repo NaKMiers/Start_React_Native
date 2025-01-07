@@ -1,13 +1,11 @@
 import EmptyState from '@/components/EmptyState'
 import SearchInput from '@/components/SearchInput'
 import VideoCard from '@/components/VideoCard'
-import { images } from '@/constants'
-import { useGlobalContext } from '@/context/GlobalProvider'
 import { searchPosts } from '@/lib/appwrite'
 import { useAppwrite } from '@/lib/useAppwrite'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect } from 'react'
-import { FlatList, Image, Text, View } from 'react-native'
+import { FlatList, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 function Search() {

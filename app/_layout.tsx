@@ -1,6 +1,6 @@
 import GlobalProvider from '@/context/GlobalProvider'
 import { useFonts } from 'expo-font'
-import { SplashScreen, Stack, useRouter } from 'expo-router'
+import { SplashScreen, Stack } from 'expo-router'
 import React, { useEffect } from 'react'
 import './global.scss'
 
@@ -12,7 +12,6 @@ export default function RootLayout() {
     Montserrat: require('../assets/fonts/Montserrat-Regular.ttf'),
     SourceSansPro: require('../assets/fonts/SourceSansPro-Regular.ttf'),
   })
-  const router = useRouter()
 
   useEffect(() => {
     if (error) throw error

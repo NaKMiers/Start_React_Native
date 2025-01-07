@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons'
 import { router, usePathname } from 'expo-router'
-import React, { useCallback, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { Alert, TextInput, TouchableOpacity, View } from 'react-native'
 
 interface SearchInputProps {
@@ -58,4 +58,4 @@ function SearchInput({ initialQuery = '', className = '' }: SearchInputProps) {
   )
 }
 
-export default SearchInput
+export default memo(SearchInput)

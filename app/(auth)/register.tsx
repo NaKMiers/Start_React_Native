@@ -1,7 +1,7 @@
 import Button from '@/components/Button'
 import FormField from '@/components/FormField'
 import { images } from '@/constants'
-import { GlobalContextType, useGlobalContext } from '@/context/GlobalProvider'
+import { useGlobalContext } from '@/context/GlobalProvider'
 import { createUser } from '@/lib/appwrite'
 import { Link, useRouter } from 'expo-router'
 import React, { useCallback, useState } from 'react'
@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 function Register() {
   // hooks
+  const { setUser, setIsLoggedIn }: any = useGlobalContext()
   const router = useRouter()
 
   // states
@@ -39,7 +40,10 @@ function Register() {
 
     try {
       const res = await createUser(form.username, form.email, form.password)
+      setUser(res)
+      setIsLoggedIn(true)
 
+      Alert.alert('Success', 'User created successfully')
       // navigate to home
       router.replace('/home')
     } catch (err: any) {

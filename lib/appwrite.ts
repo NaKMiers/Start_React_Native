@@ -72,7 +72,7 @@ export const getAccount = async () => {
     const currentAccount = await account.get()
     return currentAccount
   } catch (err: any) {
-    throw new Error(err)
+    return null
   }
 }
 
@@ -83,7 +83,7 @@ export const getCurrentUser = async () => {
     const curAccount = await getAccount()
 
     // get current account failed
-    if (!curAccount) throw Error
+    if (!curAccount) return null
 
     // get current user from current account id
     const curUser = await databases.listDocuments(config.databaseId, config.userCollectionId, [
@@ -133,6 +133,19 @@ export const searchPosts = async (query: string) => {
     const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
       Query.contains('title', query),
       Query.contains('prompt', query),
+    ])
+
+    return posts.documents
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
+// get user posts
+export const getUserPosts = async (userId: string) => {
+  try {
+    const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
+      Query.equal('creator', userId),
     ])
 
     return posts.documents

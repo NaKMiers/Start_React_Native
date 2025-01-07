@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native'
 
 interface ButtonProps {
@@ -6,14 +6,16 @@ interface ButtonProps {
   textClassName?: string
   className?: string
   isLoading?: boolean
+  style?: any
   handlePress: (event: GestureResponderEvent) => void
 }
 
-export default function Button({
+function Button({
   title,
   textClassName = '',
   className = '',
   isLoading = false,
+  style = {},
   handlePress = (e: any) => {},
 }: ButtonProps) {
   return (
@@ -21,11 +23,14 @@ export default function Button({
       onPress={handlePress}
       activeOpacity={0.7}
       disabled={isLoading}
-      className={`bg-primary rounded-xl flex items-center justify-center text-center w-full px-3 py-3 ${
+      className={`flex w-full items-center justify-center rounded-xl bg-primary px-3 py-3 text-center ${
         isLoading ? 'opacity-50' : ''
       } ${className}`}
+      style={{ ...style }}
     >
-      <Text className={`text-dark font-semibold ${textClassName}`}>{title}</Text>
+      <Text className={`font-semibold text-dark ${textClassName}`}>{title}</Text>
     </TouchableOpacity>
   )
 }
+
+export default memo(Button)

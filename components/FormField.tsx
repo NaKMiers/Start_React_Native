@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 interface FormFieldProps {
@@ -13,7 +13,7 @@ interface FormFieldProps {
   [key: string]: any
 }
 
-export default function FormField({
+function FormField({
   title,
   name,
   value,
@@ -36,6 +36,7 @@ export default function FormField({
           value={value}
           onChangeText={text => setForm((prev: any) => ({ ...prev, [name]: text }))}
           placeholder={placeholder}
+          placeholderTextColor="#7C7C7C"
           secureTextEntry={type === 'password' && !showPassword}
           {...rest}
         />
@@ -64,3 +65,5 @@ export default function FormField({
     </View>
   )
 }
+
+export default memo(FormField)

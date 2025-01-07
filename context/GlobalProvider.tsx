@@ -48,7 +48,9 @@ const GlobalProvider = ({ children }: any) => {
   }, [])
 
   return (
-    <GlobalContext.Provider value={{ isLoading, isLoggedIn, user } as GlobalContextType}>
+    <GlobalContext.Provider
+      value={{ isLoading, setIsLoading, isLoggedIn, setIsLoggedIn, user, setUser } as GlobalContextType}
+    >
       {children}
     </GlobalContext.Provider>
   )

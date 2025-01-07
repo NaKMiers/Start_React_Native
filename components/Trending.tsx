@@ -1,5 +1,5 @@
 import { icons } from '@/constants'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { memo, useCallback, useRef, useState } from 'react'
 import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native'
 import * as Animatable from 'react-native-animatable'
 import { Video, ResizeMode } from 'expo-av'
@@ -113,4 +113,4 @@ function TrendingItem({ activeItem, item, className = '' }: TrendingItemProps) {
   )
 }
 
-export default Trending
+export default memo(Trending)

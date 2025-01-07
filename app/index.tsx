@@ -11,18 +11,14 @@ export default function App() {
   const { isLoading, isLoggedIn }: any = useGlobalContext()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!isLoading && isLoggedIn) {
-      router.replace('/home')
-    }
-  }, [isLoading, isLoggedIn])
-
   // press button
   const handlePress = useCallback(() => {
     router.push('/login')
   }, [])
 
-  return (
+  return !isLoading && isLoggedIn ? (
+    <Redirect href="/home" />
+  ) : (
     <SafeAreaView className="flex h-full bg-slate-950">
       <ScrollView contentContainerClassName="p-21">
         <View className="mt-10 flex h-[40px] items-center justify-center overflow-hidden">
