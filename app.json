@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.deewas.startreactnative"
     },
     "android": {
       "adaptiveIcon": {
@@ -38,6 +39,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "32a2e2b5-77d0-4b9f-928b-5c6b8f2e80c9"
+      }
+    },
+    "owner": "nakmiers"
   }
 }
